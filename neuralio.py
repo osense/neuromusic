@@ -8,7 +8,7 @@ def average(array):
 	return sum(array)/float(len(array))
 
 SAMPLE_LENGTH = 10000	# size of one sample as an input for the neural network
-MAXIMUM = 2000			# number used to normalize data
+MAXIMUM = 1000.0		# number used to normalize data
 
 ##########################################################################################################
 
@@ -21,15 +21,16 @@ def eatWAV(input_wav):
 	rate, data = wavfile.read(os.path.abspath(input_wav))
 	length = len(data)
 
-	data_prev = map(lambda unit: average(unit)/MAXIMUM, data[0:SAMPLE_LENGTH-1])
+	data = numpy.divide(data[:,0], numpy.array([MAXIMUM]) )
 	inputs, outputs = [], []
 
+	data_prev = data[0:SAMPLE_LENGTH-1]
 	for i in range(1, int(length/SAMPLE_LENGTH)):
-		data_new = map(lambda unit: average(unit)/MAXIMUM, data[i*SAMPLE_LENGTH:(i+1)*SAMPLE_LENGTH - 1])
+		data_new = data[i*SAMPLE_LENGTH:(i+1)*SAMPLE_LENGTH - 1]
 		inputs.append(numpy.array(data_new))
 		outputs.append(numpy.array(data_prev))
 		data_prev = data_new
-	
+
 	return rate, tuple([inputs, outputs])
 
 """
