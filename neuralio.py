@@ -19,14 +19,16 @@ input_wav:: relative path to a WAV file
 """
 def eatWAV(input_wav):
 	rate, data = wavfile.read(os.path.abspath(input_wav))
-	length = len(data)
+
+	length = (len(data)/SAMPLE_LENGTH)*SAMPLE_LENGTH
+	data = data[0:length]
 
 	data = numpy.divide(data[:,0], numpy.array([MAXIMUM]) )
 	inputs, outputs = [], []
 
-	data_prev = data[0:SAMPLE_LENGTH-1]
+	data_prev = data[0:SAMPLE_LENGTH]
 	for i in range(1, int(length/SAMPLE_LENGTH)):
-		data_new = data[i*SAMPLE_LENGTH:(i+1)*SAMPLE_LENGTH - 1]
+		data_new = data[i*SAMPLE_LENGTH:(i+1)*SAMPLE_LENGTH]
 		inputs.append(numpy.array(data_new))
 		outputs.append(numpy.array(data_prev))
 		data_prev = data_new
@@ -42,3 +44,6 @@ data:: a 1-D or 2-D numpy array of either integer or float data-type
 """
 def vomitWAV(name, rate, data):
 	wavfile.write(name, rate, data)
+
+#rate, (inputs, outputs) = eatWAV('1.wav')
+#print inputs[0]
