@@ -39,6 +39,7 @@ rate:: the sample rate (in samples/sec).
 data:: a 1-D or 2-D numpy array of either integer or float data-type
 """
 def vomitWAV(name, rate, data):
+	data = numpy.multply(data, numpy.array([MAXIMUM]) )
 	wavfile.write(name, rate, data)
 
 #rate, (inputs, outputs) = eatWAV('WAVs/1.wav')
