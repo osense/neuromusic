@@ -19,7 +19,7 @@ def eatWAV(input_wav):
 	length = (len(data)/SAMPLE_LENGTH)*SAMPLE_LENGTH
 	data = data[0:length]
 
-	data = numpy.divide(data[:,0], numpy.array([MAXIMUM]) )
+	data = numpy.divide(numpy.average(data, axis=1), numpy.array([MAXIMUM]) )
 	inputs, outputs = [], []
 
 	data_prev = data[0:SAMPLE_LENGTH]
@@ -39,8 +39,13 @@ rate:: the sample rate (in samples/sec).
 data:: a 1-D or 2-D numpy array of either integer or float data-type
 """
 def vomitWAV(name, rate, data):
-	data = numpy.multply(data, numpy.array([MAXIMUM]) )
 	wavfile.write(name, rate, data)
 
+# stuff for testing eatWAV
 #rate, (inputs, outputs) = eatWAV('WAVs/1.wav')
 #print inputs[0]
+
+# stuff fore testint vomitWAV
+#rate, data = wavfile.read(os.path.abspath('WAVs/1.wav'))
+#data = numpy.divide(numpy.average(data, axis=1), numpy.array([MAXIMUM]) )
+#vomitWAV('test.wav', rate, data)
