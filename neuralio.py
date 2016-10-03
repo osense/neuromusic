@@ -5,6 +5,7 @@ from net import *
 np.set_printoptions(threshold=np.inf)
 
 SAMPLE_LENGTH = Net.layers[0]	# size of one sample as an input for the neural network
+#SAMPLE_LENGTH = 10000
 RATIO = 5							# scale maximum
 
 ##########################################################################################################
@@ -49,5 +50,6 @@ def vomitWAV(name, rate, data):
 
 # stuff fore testint vomitWAV
 #rate, data = wavfile.read(os.path.abspath('WAVs/1.wav'))
-#data = np.divide(np.average(data, axis=1), np.array([MAXIMUM]) )
+#data = np.average(data, axis=1)
+#data = np.tanh(data/(max(data)/RATIO))
 #vomitWAV('test.wav', rate, data)
