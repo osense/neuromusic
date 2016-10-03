@@ -4,6 +4,9 @@ from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Activation
 from keras.layers.recurrent import LSTM
 
+import theano
+theano.config.openmp = True
+
 
 class Net:
     model = None
@@ -16,11 +19,13 @@ class Net:
         self.model.add(LSTM(
             input_dim=self.layers[0],
             output_dim=self.layers[1],
+            consume_less='cpu',
             return_sequences=True))
         self.model.add(Dropout(self.dropout))
 
         self.model.add(LSTM(
             output_dim=self.layers[2],
+            consume_less='cpu',
             return_sequences=False))
         self.model.add(Dropout(self.dropout))
 
@@ -42,7 +47,7 @@ class Net:
         try:
             self.model.fit(
                 X, Y_in,
-                batch_size=8, nb_epoch=1, validation_split=0.05, verbose=1)
+                batch_size=8, nb_epoch=10, verbose=1)
         except KeyboardInterrupt:
             print 'Training duration (s) : ', time.time() - start
 
