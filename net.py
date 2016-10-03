@@ -1,7 +1,7 @@
 import numpy as np
 import time
-from keras.models import Model, load_model
-from keras.layers import Input, Dense
+from keras.models import Sequential, load_model
+from keras.layers import Dense, Dropout, Activation
 from keras.layers.recurrent import LSTM
 import neuralio
 import datahandler
@@ -9,18 +9,28 @@ import datahandler
 
 class Net:
     model = None
+    layers = [2000, 1000, 500, 2000]
     dropout = 0.2
 
     def new(self):
-        a = Input(shape=(10000,3))
-        b = LSTM(input_dim=10000, output_dim=2000, return_sequences=True, dropout_U=self.dropout, dropout_W=self.dropout)(a)
-        c = LSTM(input_dim=2000, output_dim=1000, return_sequences=False, dropout_U=self.dropout, dropout_W=self.dropout)(b)
-        z = Dense(input_dim=1000, output_dim=10000)(c)
-        self.model= Model(input=a, output=z)
+        self.model = Sequential()
 
-        start = time.time()
+        self.model.add(LSTM(
+            input_dim=self.layers[0],
+            output_dim=self.layers[1],
+            return_sequences=True))
+        self.model.add(Dropout(self.dropout))
+
+        self.model.add(LSTM(
+            output_dim=self.layers[2],
+            return_sequences=False))
+        self.model.add(Dropout(self.dropout))
+
+        self.model.add(Dense(
+            output_dim=self.layers[3]))
+        self.model.add(Activation("linear"))
+
         self.model.compile(loss="mse", optimizer="rmsprop")
-        print "Compilation Time : ", time.time() - start
 
     def save(self, path='model.h5'):
         self.model.save(path)
