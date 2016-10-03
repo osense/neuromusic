@@ -3,8 +3,6 @@ import time
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Activation
 from keras.layers.recurrent import LSTM
-import neuralio
-import datahandler
 
 
 class Net:
@@ -38,14 +36,17 @@ class Net:
     def load(self, path='model.h5'):
         self.model = load_model(path)
 
-    def learn(self, (X_train, Y_train)):
+    def learn(self, (X_in, Y_in)):
         start = time.time()
+        X = X_in.reshape(len(X_in), 1 , self.layers[0])
         try:
             self.model.fit(
-                X_train, Y_train,
+                X, Y_in,
                 batch_size=8, nb_epoch=1, validation_split=0.05, verbose=1)
         except KeyboardInterrupt:
             print 'Training duration (s) : ', time.time() - start
 
     def eval(self, input):
-        return self.model.predict(input, batch_size=1)
+        net_dim = self.layers[0]
+        i = input.reshape(len(input) / net_dim, 1, net_dim)
+        return self.model.predict(i, batch_size=1)
