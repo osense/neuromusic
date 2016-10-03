@@ -49,4 +49,12 @@ class Net:
     def eval(self, input):
         net_dim = self.layers[0]
         i = input.reshape(len(input) / net_dim, 1, net_dim)
-        return self.model.predict(i, batch_size=1)
+        return np.concatenate(self.model.predict(i, batch_size=1))
+
+    def loop(self, input, times):
+        out = np.array([])
+        x = input
+        for i in range(times):
+            x = self.eval(x)
+            out = np.concatenate((out, x))
+        return out
