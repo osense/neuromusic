@@ -1,10 +1,11 @@
 import numpy as np
 from scipy.io import wavfile
 import os
+from net import *
 np.set_printoptions(threshold=np.inf)
 
-SAMPLE_LENGTH = 10000	# size of one sample as an input for the neural network
-RATIO = 5				# scale maximum
+SAMPLE_LENGTH = Net.layers[0]	# size of one sample as an input for the neural network
+RATIO = 5							# scale maximum
 
 ##########################################################################################################
 
