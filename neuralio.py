@@ -28,8 +28,8 @@ def eatWAV(input_wav):
 	data_prev = data[0:SAMPLE_LENGTH]
 	for i in range(1, int(length/SAMPLE_LENGTH)):
 		data_new = data[i*SAMPLE_LENGTH:(i + 1)*SAMPLE_LENGTH]
-		inputs.append(np.array(data_new))
-		outputs.append(np.array(data_prev))
+		inputs.append(np.array(data_prev))
+		outputs.append(np.array(data_new))
 		data_prev = data_new
 
 	return rate, tuple([np.array(inputs), np.array(outputs)])
@@ -46,7 +46,7 @@ def vomitWAV(name, rate, data):
 
 # stuff for testing eatWAV
 #rate, (inputs, outputs) = eatWAV('WAVs/1.wav')
-#print inputs[100]
+#print inputs[0]
 
 # stuff fore testint vomitWAV
 #rate, data = wavfile.read(os.path.abspath('WAVs/1.wav'))
